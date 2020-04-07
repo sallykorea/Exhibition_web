@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>/community/insertform.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<!-- include summernote css/js -->
+
 <style>
 	/* textarea 의 크기가 SmartEditor 의 크기가 된다. */
 	#content{
@@ -56,7 +58,7 @@
 	6. 폼을 제출하고 싶으면  submitContents(this) 라는 javascript 가 
 	      폼 안에 있는 버튼에서 실행되면 된다.
  --%>
-<!-- SmartEditor 에서 필요한 javascript 로딩  -->
+<%-- <!-- SmartEditor 에서 필요한 javascript 로딩  -->
 <script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 <script>
 	var oEditors = [];
@@ -109,6 +111,6 @@
 		var nFontSize = 24;
 		oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
 	}
-</script>
+</script> --%>
 </body>
 </html>
