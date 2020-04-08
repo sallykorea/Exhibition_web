@@ -37,7 +37,7 @@ public class ComServiceImpl implements ComService{
 		if(keyword != null) {
 			if(condition.equals("titlecontent")) {//제목+내용
 				dto.setTitle(keyword);
-				dto.setContent(keyword);
+				dto.setEditordata(keyword);
 			}else if(condition.equals("title")) {//제목
 				dto.setTitle(keyword);
 			}else if(condition.equals("writer")) {//작성자
@@ -116,7 +116,7 @@ public class ComServiceImpl implements ComService{
 		if(keyword != null) {//검색 키워드가 전달된 경우
 			if(condition.equals("titlecontent")) {//제목+내용 검색
 				dto.setTitle(keyword);
-				dto.setContent(keyword);
+				dto.setEditordata(keyword);
 			}else if(condition.equals("title")) {//제목 검색
 				dto.setTitle(keyword);
 			}else if(condition.equals("writer")) {//작성자 검색
