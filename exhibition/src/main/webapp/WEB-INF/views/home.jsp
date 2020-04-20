@@ -219,7 +219,7 @@ $(document).ready(function(){
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="owl-carousel owl-theme">
-				<c:forEach var="tmp" items="${list }" end="9">
+				<c:forEach var="tmp" items="${list }">
 					<div class="item">
 						<a href="detail.do?seq=${tmp.seq }">
 							<img alt="${tmp.title }" src="${tmp.thumbnail }">
