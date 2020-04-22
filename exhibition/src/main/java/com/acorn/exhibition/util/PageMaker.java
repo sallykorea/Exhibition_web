@@ -1,4 +1,4 @@
-package com.acorn.exhibition.comment.service;
+package com.acorn.exhibition.util;
 /**
  * 페이징 처리를하는 클래스
  * <br/>

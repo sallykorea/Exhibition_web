@@ -191,10 +191,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/list")
-	public ModelAndView list(ModelAndView mView, HttpServletRequest request) {
+	public String list(HttpServletRequest request) {
 		service.list(request);
-		mView.setViewName("list");
-		return mView;
+		return "list";
 	}
 	@ResponseBody
 	@RequestMapping("/listfavor")

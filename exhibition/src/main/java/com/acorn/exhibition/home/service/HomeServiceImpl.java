@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import com.acorn.exhibition.comment.dao.CommentDao;
-import com.acorn.exhibition.comment.service.PageMaker;
 import com.acorn.exhibition.home.dao.HomeDao;
 import com.acorn.exhibition.home.dto.ApiDto;
 import com.acorn.exhibition.home.dto.Com_LikeDto;
@@ -19,6 +18,7 @@ import com.acorn.exhibition.home.dto.CommentDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 import com.acorn.exhibition.home.dto.LikeDto;
 import com.acorn.exhibition.home.dto.mapDto;
+import com.acorn.exhibition.util.PageMaker;
 
 @Service
 public class HomeServiceImpl implements HomeService{
