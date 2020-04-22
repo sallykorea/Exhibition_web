@@ -47,14 +47,14 @@
 		<choose>
 			<when test="startdate != null and enddate != null">
 				<![CDATA[
-				WHERE startdate>=to_date(${startdate},'yyyymmdd') AND startdate<=to_date(${enddate},'yyyymmdd')
+				WHERE startdate>=to_date(#{startdate}) AND startdate<=to_date(#{enddate})
 				]]>
 			</when>
 			<when test="title != null">
-				WHERE title LIKE '%${title}%'
+				WHERE title LIKE '%'||#{title}||'%'
 			</when>
 			<when test="place != null">
-				WHERE place LIKE '%${place}%'
+				WHERE place LIKE '%'||#{place}||'%' 
 			</when>
 		</choose>
 	</select>
@@ -62,19 +62,19 @@
 	<select id="getList" parameterType="fullCalendarDto" resultType="fullCalendarDto">
 		SELECT *
 		 FROM (SELECT result1.*, ROWNUM AS rnum
-				FROM (SELECT seq, title, TO_CHAR(startdate,'YYYY/MM/DD') AS startdate, TO_CHAR(enddate,'YYYY/MM/DD') AS enddate, place, thumbnail, likecount
+				FROM (SELECT seq, title, TO_CHAR(startdate,'YYYY-MM-DD') AS startdate, TO_CHAR(enddate,'YYYY-MM-DD') AS enddate, place, thumbnail, likecount
 						FROM tb_api_date
 						<choose>
 							<when test="startdate != null and enddate != null">
 								<![CDATA[
-								WHERE startdate>=to_date(${startdate},'yyyymmdd') AND startdate<=to_date(${enddate},'yyyymmdd')
+								WHERE startdate>=to_date(#{startdate}) AND startdate<=to_date(#{enddate})
 								]]>
 							</when>
 							<when test="title != null">
-								WHERE title LIKE '%${title}%'
+								WHERE title LIKE '%'||#{title}||'%'
 							</when>
 							<when test="place != null">
-								WHERE place LIKE '%${place}%'
+								WHERE place LIKE '%'||#{place}||'%' 
 							</when>
 						</choose>
 						ORDER BY startdate DESC

@@ -189,7 +189,7 @@ public class HomeController {
 		service.getData(request);
 		return "detail";
 	}
-	@ResponseBody
+	
 	@RequestMapping("/list")
 	public ModelAndView list(ModelAndView mView, HttpServletRequest request) {
 		service.list(request);

@@ -122,13 +122,13 @@ ol, ul {
 			<c:if test="${not empty keyword }">
 				<p>
 					<strong>${keyword }</strong> 라는 검색어로 
-					<strong>${totalRow }</strong> 개의 공연을 찾았습니다.
+					<strong>${pageMaker.totalRow }</strong> 개의 공연을 찾았습니다.
 				</p>
 			</c:if>
 			<c:if test="${not empty startdate and not empty enddate }">
 				<p>
 					<strong>${startdate }~${enddate }</strong> 에는 
-					<strong>${totalRow }</strong> 개의 공연이 있습니다.
+					<strong>${pageMaker.totalRow }</strong> 개의 공연이 있습니다.
 				</p>
 			</c:if>
 		</div>
@@ -152,18 +152,15 @@ ol, ul {
 				<input class="form-control date" type="text" name="endDate" class="date" id="endDate" value="${enddate }" autocomplete="off" readonly/>
 				<button class="btn img-button" type="submit" disabled="disabled"></button>
 			</div>
-		</form>
-		
-		
-		</div>
-		<div class="option_tab _tabContainer" data-tab="sort">
+		</form>	
+	</div>
+	<div class="option_tab _tabContainer" data-tab="sort">
 		<ul class="sub_option">
 			<li class="_tab" data-value role="tab" ><a class ="sort" href="javascript:" id="favorite" >인기순</a></li>
 			<li  class="_tab" data-value role="default.asc" ><a class ="sort" type="javascript:" id="pastdate">날짜순</a></li>
 		</ul>
-		</div>
+	</div>
 	<table class="table table-hover">
-
 		<colgroup>
 			<col class="col-xs-6"/>
 			<col class="col-xs-1"/>
@@ -200,17 +197,17 @@ ol, ul {
 	<div class="page-display" style="text-align: center;">
 		<ul class="pagination pagination-sm">
 			<c:choose>
-				<c:when test="${startPageNum ne 1 }">
+				<c:when test="${pageMaker.startPageNum ne 1 }">
 					<li>
 						<c:choose>
 							<c:when test="${encodedKeyword ne null }">
-								<a href="list.do?pageNum=${startPageNum-1 }&condition=${condition }&keyword=${encodedKeyword }">&laquo;</a>
+								<a href="list.do?pageNum=${pageMaker.startPageNum-1 }&condition=${condition }&keyword=${encodedKeyword }">&laquo;</a>
 							</c:when>
 							<c:when test="${startdate ne null and enddate ne null   }">
-								<a href="list.do?pageNum=${startPageNum-1 }&condition=${condition }&startDate=${startdateFormat }&endDate=${enddateFormat }">&laquo;</a>
+								<a href="list.do?pageNum=${pageMaker.startPageNum-1 }&condition=${condition }&startDate=${startdate }&endDate=${enddate }">&laquo;</a>
 							</c:when>
 							<c:otherwise>
-								<a href="list.do?pageNum=${startPageNum-1 }">&laquo;</a>
+								<a href="list.do?pageNum=${pageMaker.startPageNum-1 }">&laquo;</a>
 							</c:otherwise>
 						</c:choose>
 					</li>
@@ -222,16 +219,16 @@ ol, ul {
 				</c:otherwise>
 			</c:choose>
 			
-			<c:forEach var="i" begin="${requestScope.startPageNum }" end="${requestScope.endPageNum }" step="1">
+			<c:forEach var="i" begin="${pageMaker.startPageNum }" end="${pageMaker.endPageNum }" step="1">
 				<c:choose>
-					<c:when test="${i eq pageNum }">
+					<c:when test="${i eq pageMaker.pageNum }">
 						<li class="active">
 							<c:choose>
 								<c:when test="${encodedKeyword ne null  }">
 									<a href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedKeyword }">${i }</a>
 								</c:when>
 								<c:when test="${startdate ne null and enddate ne null  }">
-									<a href="list.do?pageNum=${i }&condition=${condition }&startDate=${startdateFormat }&endDate=${enddateFormat }">${i }</a>
+									<a href="list.do?pageNum=${i }&condition=${condition }&startDate=${startdate }&endDate=${enddate }">${i }</a>
 
 								</c:when>
 								<c:otherwise>
@@ -247,7 +244,7 @@ ol, ul {
 									<a href="list.do?pageNum=${i }&condition=${condition }&keyword=${encodedKeyword }">${i }</a>
 								</c:when>
 								<c:when test="${startdate ne null and enddate ne null}">
-									<a href="list.do?pageNum=${i }&condition=${condition }&startDate=${startdateFormat }&endDate=${enddateFormat }">${i }</a>
+									<a href="list.do?pageNum=${i }&condition=${condition }&startDate=${startdate }&endDate=${enddate }">${i }</a>
 
 								</c:when>
 								<c:otherwise>
@@ -260,17 +257,17 @@ ol, ul {
 			</c:forEach>
 			
 			<c:choose>
-				<c:when test="${endPageNum < totalPageCount }">
+				<c:when test="${pageMaker.endPageNum < pageMaker.totalPageCount }">
 					<li>
 						<c:choose>
 							<c:when test="${encodedKeyword ne null }">
-								<a href="list.do?pageNum=${endPageNum+1 }&condition=${condition }&keyword=${encodedKeyword }">&raquo;</a>
+								<a href="list.do?pageNum=${pageMaker.endPageNum+1 }&condition=${condition }&keyword=${encodedKeyword }">&raquo;</a>
 							</c:when>
 							<c:when test="${startdate ne null and enddate ne null }">
-								<a href="list.do?pageNum=${endPageNum+1 }&condition=${condition }&startDate=${startdateFormat }&endDate=${enddateFormat }">&raquo;</a>
+								<a href="list.do?pageNum=${pageMaker.endPageNum+1 }&condition=${condition }&startDate=${startdate }&endDate=${enddate }">&raquo;</a>
 							</c:when>
 							<c:otherwise>
-								<a href="list.do?pageNum=${endPageNum+1 }">&raquo;</a>
+								<a href="list.do?pageNum=${pageMaker.endPageNum+1 }">&raquo;</a>
 							</c:otherwise>
 						</c:choose>
 					</li>
