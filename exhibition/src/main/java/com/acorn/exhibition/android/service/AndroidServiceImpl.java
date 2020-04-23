@@ -5,15 +5,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.acorn.exhibition.home.dto.ApiDto;
-import com.acorn.exhibition.home.service.XmlParsing;
+import com.acorn.exhibition.home.dto.ExhibitionDto;
+import com.acorn.exhibition.util.XmlParser;
 
 @Service
 public class AndroidServiceImpl implements AndroidService{
 
 	@Override
 	public Map<String, Object> getData(int seq) {
-		ApiDto apiDto = XmlParsing.getData(seq);
+		ExhibitionDto apiDto = XmlParser.getDetailData(seq);
 		
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("seq", Integer.toString(apiDto.getSeq()));
