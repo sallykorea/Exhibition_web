@@ -19,7 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.acorn.exhibition.home.dto.ApiDto;
+import com.acorn.exhibition.home.dto.ExhibitionDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 import com.acorn.exhibition.home.dto.mapDto;
 import com.acorn.exhibition.home.service.HomeService;
@@ -32,7 +32,7 @@ public class HomeController {
 	  
 
 	@RequestMapping(value = "/home")
-	public ModelAndView home(@ModelAttribute("dto") ApiDto dto, ModelAndView mView) {
+	public ModelAndView home(@ModelAttribute("dto") ExhibitionDto dto, ModelAndView mView) {
 		service.getPopularEvents(mView);
 		
 		// 데이터 검색 기간( 현재시간 ~ 현재시간 +1년 ) 검색하기 위한 부분
@@ -138,7 +138,7 @@ public class HomeController {
 		return mView;
 	}
 
-	private Element extractedInsertApiData(ApiDto dto, Document parseDoc) {
+	private Element extractedInsertApiData(ExhibitionDto dto, Document parseDoc) {
 		
 		// 파싱할 tag "perforList" 하위 노드에 데이터가 존재
 		NodeList nList = parseDoc.getElementsByTagName("perforList");

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acorn.exhibition.comment.dao.CommentDao;
-import com.acorn.exhibition.home.dto.Com_LikeDto;
+import com.acorn.exhibition.home.dto.CommentLikeDto;
 import com.acorn.exhibition.home.dto.CommentDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 import com.acorn.exhibition.home.dto.LikeDto;
@@ -114,7 +114,7 @@ public class CommentServiceImpl implements CommentService{
 		
 		//1. DB 에서 댓글 목록을 얻어온다.
 		List<CommentDto> commentList=commentDao.getList(dto);
-		List<Com_LikeDto> comLikeList=new ArrayList<Com_LikeDto>();
+		List<CommentLikeDto> comLikeList=new ArrayList<CommentLikeDto>();
 		
 		//좋아요
 		String CommentLikeId=null;
@@ -124,7 +124,7 @@ public class CommentServiceImpl implements CommentService{
 		     for(int i=0;i<commentList.size();i++) {
 				CommentDto commentDto = commentList.get(i);
 				int num = commentDto.getNum();
-				Com_LikeDto comLikeDto = new Com_LikeDto(id,num);
+				CommentLikeDto comLikeDto = new CommentLikeDto(id,num);
 				CommentLikeId=commentDao.getCommentLikeId(comLikeDto);
 				if(id.equals(CommentLikeId)) {
 				   isCommentLikeId = true;

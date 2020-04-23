@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import com.acorn.exhibition.comment.dao.CommentDao;
 import com.acorn.exhibition.home.dao.HomeDao;
-import com.acorn.exhibition.home.dto.ApiDto;
-import com.acorn.exhibition.home.dto.Com_LikeDto;
+import com.acorn.exhibition.home.dto.ExhibitionDto;
+import com.acorn.exhibition.home.dto.CommentLikeDto;
 import com.acorn.exhibition.home.dto.CommentDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 import com.acorn.exhibition.home.dto.LikeDto;
 import com.acorn.exhibition.home.dto.mapDto;
 import com.acorn.exhibition.util.PageMaker;
-import com.acorn.exhibition.util.XmlParsing;
+import com.acorn.exhibition.util.XmlParser;
 
 @Service
 public class HomeServiceImpl implements HomeService{
@@ -88,73 +88,58 @@ public class HomeServiceImpl implements HomeService{
 		List<FullCalendarDto> list=dao.getPopularEvents();
 		mView.addObject("list", list);
 	}
-
+	
+	/*
+	 * - 작성자 : 김현경
+	 * - 작성일 : 2020-04-22
+	 * - Method 설명 : 공연 상세 정보를 조회하는 메소드 
+	 */
 	@Override
 	public void getData(HttpServletRequest request) {
 		
-		//파라미터로 전달되는 글번호
+		//파라미터로 전달되는 정보들을 갖고 온다.
 		int seq=Integer.parseInt(request.getParameter("seq"));
 		String id=(String)request.getSession().getAttribute("id");
+		String strPageNum=request.getParameter("pageNum");
+
+		//Open API 요청을 보내 공연에 대한 상세정보를 받아오고, 이를 exhibitionDto에 담아 request 객체에 담기
+		ExhibitionDto exhibitionDto = XmlParser.getDetailData(seq);
+		exhibitionDto.setLikeCount(dao.getData(seq).getLikeCount());
+		request.setAttribute("exhibitionDto", exhibitionDto);
 		
+		//페이징 처리. PageMaker 객체를 활용하여 필요한 데이터를 계산한다.
+		PageMaker pageMaker=new PageMaker();
+		pageMaker.setPageRowCount(8);
+		if(strPageNum != null){
+			pageMaker.setPageNum(strPageNum);
+		}
+		pageMaker.setTotalRow(commentDao.getCount());
+		
+		//댓글 목록을 얻어오기
 		FullCalendarDto dto=new FullCalendarDto();
 		dto.setSeq(seq);
-		
-		//DB에 있는 데이터 갖고 오기
-		ApiDto apiDto = XmlParsing.getData(seq);
-
-		//댓글 페이징 처리
-		//한 페이지에 나타낼 row 의 갯수
-		final int PAGE_ROW_COUNT=8;
-		//하단 디스플레이 페이지 갯수
-		final int PAGE_DISPLAY_COUNT=5;
-		
-		//보여줄 페이지의 번호
-		int pageNum=1;
-		//보여줄 페이지의 번호가 파라미터로 전달되는지 읽어와 본다.	
-		String strPageNum=request.getParameter("pageNum");
-		if(strPageNum != null){//페이지 번호가 파라미터로 넘어온다면
-		//페이지 번호를 설정한다.
-			pageNum=Integer.parseInt(strPageNum);
-		}
-		//보여줄 페이지 데이터의 시작 ResultSet row 번호
-		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
-		//보여줄 페이지 데이터의 끝 ResultSet row 번호
-		int endRowNum=pageNum*PAGE_ROW_COUNT;
-		
-		//전체 row 의 갯수를 읽어온다.
-		int totalRow=commentDao.getCount();
-		//전체 페이지의 갯수 구하기
-		int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
-		//시작 페이지 번호
-		int startPageNum=1+((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
-		//끝 페이지 번호
-		int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
-		//끝 페이지 번호가 잘못된 값이라면 
-		if(totalPageCount < endPageNum){
-			endPageNum=totalPageCount; //보정해준다. 
-		}		
-		// CafeDto 객체에 위에서 계산된 startRowNum 과 endRowNum 을 담는다.
-		dto.setStartRowNum(startRowNum);
-		dto.setEndRowNum(endRowNum);
-		
-		//1. DB 에서 댓글 목록을 얻어온다.
+		dto.setStartRowNum(pageMaker.getStartRowNum());
+		dto.setEndRowNum(pageMaker.getEndRowNum());
 		List<CommentDto> commentList=commentDao.getList(dto);
-		List<Com_LikeDto> comLikeList=new ArrayList<Com_LikeDto>();
+		request.setAttribute("commentList", commentList);
 		
-		//좋아요
+		//공연, 댓글 좋아요 : 좋아요 한 적이 있다면 빨간 하트 표시, 없다면 빈하트 표시
+		//로그인한 아이디가 해당 공연 또는 댓글을 좋아요 한 적이 있는지 id 동일 여부로 판단
+		List<CommentLikeDto> comLikeList=new ArrayList<CommentLikeDto>();
 		String ExhibitionLikeId=null;
-		String CommentLikeId=null;
-		
 		boolean isCommentLikeId=false;
+		
 		if(id!=null) {
-		     LikeDto likeDto=new LikeDto(seq, id);
-		     ExhibitionLikeId=dao.getExhibitionLikeId(likeDto);
-		     
-		     for(int i=0;i<commentList.size();i++) {
+			 //공연 좋아요
+			 LikeDto likeDto=new LikeDto(seq, id);
+			 ExhibitionLikeId=dao.getExhibitionLikeId(likeDto);
+			 
+			 //댓글 좋아요
+			 for(int i=0;i<commentList.size();i++) {
 				CommentDto commentDto = commentList.get(i);
 				int num = commentDto.getNum();
-				Com_LikeDto comLikeDto = new Com_LikeDto(id,num);
-				CommentLikeId=commentDao.getCommentLikeId(comLikeDto);
+				CommentLikeDto comLikeDto = new CommentLikeDto(id,num);
+				String CommentLikeId=commentDao.getCommentLikeId(comLikeDto);
 				if(id.equals(CommentLikeId)) {
 				   isCommentLikeId = true;
 				   comLikeDto.setIsCommentLikeId(isCommentLikeId);
@@ -167,24 +152,14 @@ public class HomeServiceImpl implements HomeService{
 			 }//for end
 		}//if end
 		      
-		
-		request.setAttribute("comLikeList", comLikeList);
 		request.setAttribute("ExhibitionLikeId", ExhibitionLikeId);
-		
-		
-		FullCalendarDto tmp=dao.getData(seq);
-		dto.setLikeCount(tmp.getLikeCount());
-
-		
-		//EL, JSTL 을 활용하기 위해 필요한 모델을 request 에 담는다.
-		request.setAttribute("commentList", commentList);
 		request.setAttribute("id", id);
-		request.setAttribute("dto", dto);
-		request.setAttribute("exhibitionDto", apiDto);
+		request.setAttribute("comLikeList", comLikeList);
+		
 	}
 	
 	@Override
-	public void addExhibition(ApiDto dto) {
+	public void addExhibition(ExhibitionDto dto) {
 		dao.insert(dto);
 		
 	}

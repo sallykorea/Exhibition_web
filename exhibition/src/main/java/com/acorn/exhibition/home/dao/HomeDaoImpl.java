@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-import com.acorn.exhibition.home.dto.ApiDto;
+import com.acorn.exhibition.home.dto.ExhibitionDto;
 
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 import com.acorn.exhibition.home.dto.LikeDto;
@@ -37,7 +37,7 @@ public class HomeDaoImpl implements HomeDao{
 	}
 
 	@Override
-	public void insert(ApiDto dto) {
+	public void insert(ExhibitionDto dto) {
 		session.insert("event.insert", dto);
 	}
 

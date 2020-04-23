@@ -127,13 +127,13 @@
 	<jsp:include page="include/navbar.jsp"></jsp:include>
 	<div class="container">
 		<div class="sub-nav-left">
-			<a href="home.do" onclick="javascript:page_link('000000'); return false;">
+			<a href="home.do">
 				<img src="resources/images/home.png" alt="홈" />
 			</a>
 			>
-			<a href="list.do" onclick="javascript:page_link('010000'); return false;">목록</a>
+			<a href="list.do">목록</a>
 			>
-			<a href="detail.do?seq=${exhibitionDto.seq }" onclick="javascript:page_link('010100'); return false;">${exhibitionDto.title }</a>
+			<a href="detail.do?seq=${exhibitionDto.seq }">${exhibitionDto.title }</a>
 		</div>	
 		<div class="row">
 			<div class="col-sm-4">
@@ -161,7 +161,7 @@
 							</c:otherwise>
 						</c:choose>
 						좋아요
-						<span>${dto.likeCount }</span>
+						<span>${exhibitionDto.likeCount }</span>
 					</button>
 				</div> 
 				<div >
@@ -187,6 +187,9 @@
 					</c:choose>
 				</div>
 			</div>
+			<div>
+				<h3>한줄 커뮤니티</h3>
+			</div>
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="comments">
@@ -194,7 +197,7 @@
 							<!-- 원글에 댓글을 작성할 수 있는 폼 : 누가 쓴 어떤글에 댓글을 작성하는지 파라미터로 담아서 폼 제출시 post 방식으로 전달 -->
 							<form class="comment-insert-form" action="comment_insert.do"
 								method="post">
-								<input type="hidden" name="ref_group" value="${dto.seq }" />
+								<input type="hidden" name="ref_group" value="${exhibitionDto.seq }" />
 								<textarea name="content"><c:if test="${empty id }">로그인이 필요합니다.</c:if></textarea>
 								<!-- 로그인을 하지않았을 때 '로그인이 필요합니다' 출력 -->
 								<button type="submit">등록</button>
@@ -246,14 +249,12 @@
 												<c:choose>
 													<c:when test="${id ne null }" >
 														<c:forEach items="${comLikeList }" var="comList">
-
 															<c:choose>
 																<c:when test="${tmp.num eq comList.num }">
 																	<button class="btn btn-default comlike" id="comlike" type="button" value=${tmp.num }>
 																		<c:choose>
 																			<c:when test="${comList.isCommentLikeId }">
 																				<img src="${pageContext.request.contextPath }/resources/images/comment_red-heart.png" alt="" />
-																				<%-- <span>${tmp.num }${comList.num }</span> --%>
 																			</c:when>
 																			<c:otherwise>
 																				<img src="${pageContext.request.contextPath }/resources/images/comment_empty-heart.png" alt="" />
@@ -263,7 +264,6 @@
 																		<span>${tmp.com_likeCount }</span>
 																	</button>
 																</c:when>
-																
 															</c:choose>
 														</c:forEach>
 													</c:when>
@@ -278,7 +278,7 @@
 											</dd>
 										</dl>
 										<form class="comment-insert-form" action="comment_insert.do" method="post">
-											<input type="hidden" name="ref_group" value="${dto.seq }" />
+											<input type="hidden" name="ref_group" value="${exhibitionDto.seq }" />
 											<input type="hidden" name="target_id" value="${tmp.writer }" />
 											<input type="hidden" name="comment_group"
 												value="${tmp.comment_group }" />
@@ -336,13 +336,13 @@
 		</div><!-- class="container" -->
 <script>
 	//공연 좋아요
-	$(".like").on("click", function(){
+	$(document).on("click",".like", function(){
 		var isLogin=${not empty id};
 		if(isLogin==true){
 			$.ajax({
 				url:"updateLikeCount.do",
 				method:"post", 
-				data:{"seq":${dto.seq}},
+				data:{"seq":${exhibitionDto.seq}},
 				dataType:"json",
 				success:function(responseData){
 					console.log(responseData);
@@ -363,14 +363,14 @@
 		if(isLogin==false){
 			var goLoginPage=confirm("로그인이 필요합니다. 로그인 하시겠습니까?");
 			if(goLoginPage==true){
-				location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${dto.seq}";
+				location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${exhibitionDto.seq}";
 				imgLike=false;
 			}
 		}
 	});
 	
 	//댓글 좋아요
-	$(".comlike").on("click",function(){
+	$(document).on("click",".comlike",function(){
 		var num = $(this).attr('value');
 		var isLogin=${not empty id};
 		var imgTag=$(this).children('img');
@@ -398,7 +398,7 @@
 		if(isLogin==false){
 			var goLoginPage=confirm("로그인이 필요합니다. 로그인 하시겠습니까?");
 			if(goLoginPage==true){
-				location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${dto.seq}";
+				location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${exhibitionDto.seq}";
 				imgLike=false;
 			}
 		}
@@ -412,7 +412,7 @@
 	    	$.ajax({
 				url:"more_comment.do",
 				method:"post",
-				data:{"pageNum":pageNum, "seq":${dto.seq}}, //data : 파라미터로 전달할 문자열 
+				data:{"pageNum":pageNum, "seq":${exhibitionDto.seq}}, //data : 파라미터로 전달할 문자열 
 				dataType:"html",
 				success:function(responseData){
 					$(".comments ul").append(responseData);
@@ -471,7 +471,7 @@
 				data:{"num":num},
 				success:function(responseData){
 					if(responseData.isSuccess){
-						location.href="${pageContext.request.contextPath}/detail.do?seq=${dto.seq}";
+						location.href="${pageContext.request.contextPath}/detail.do?seq=${exhibitionDto.seq}";
 					}
 				}
 			});
@@ -484,7 +484,7 @@
 		var isLogin=${not empty id};
 		if(isLogin==false){
 			alert("로그인 페이지로 이동 합니다.");
-			location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${dto.seq}";
+			location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${exhibitionDto.seq}";
 			return false;//폼 전송 막기 
 		}
 	});
@@ -496,7 +496,7 @@
 		if(isLogin==false){
 			var isMove=confirm("로그인 페이지로 이동하시겠습니까?");
 			if(isMove){
-				location.href="${pageContext.request.contextPath }/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${dto.seq}";
+				location.href="${pageContext.request.contextPath }/users/loginform.do?url=${pageContext.request.contextPath}/detail.do?seq=${exhibitionDto.seq}";
 			}
 		}
 	});

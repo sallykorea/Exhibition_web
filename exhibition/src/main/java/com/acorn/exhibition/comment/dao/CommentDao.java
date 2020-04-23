@@ -2,7 +2,7 @@ package com.acorn.exhibition.comment.dao;
 
 import java.util.List;
 
-import com.acorn.exhibition.home.dto.Com_LikeDto;
+import com.acorn.exhibition.home.dto.CommentLikeDto;
 import com.acorn.exhibition.home.dto.CommentDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 
@@ -20,5 +20,5 @@ public interface CommentDao {
 	public boolean addOnCommentLike(CommentDto dto);
 	public boolean addcommentLikeCount(int num);
  	public boolean minuscommentLikeCount(int num);
- 	public String getCommentLikeId(Com_LikeDto comlikeDto);
+ 	public String getCommentLikeId(CommentLikeDto comlikeDto);
 }

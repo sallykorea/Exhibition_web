@@ -72,7 +72,7 @@
 		WHERE num=#{num}
 	</update>
 	
-	<select id="getid" parameterType="com.acorn.exhibition.home.dto.Com_LikeDto" resultType="java.lang.String">
+	<select id="getid" parameterType="com.acorn.exhibition.home.dto.CommentLikeDto" resultType="java.lang.String">
 		SELECT id
 		FROM comment_like
 		WHERE id=#{id} And num=#{num}

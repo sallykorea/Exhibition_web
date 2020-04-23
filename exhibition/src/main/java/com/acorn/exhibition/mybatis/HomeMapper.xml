@@ -24,7 +24,7 @@
 		WHERE seq=#{seq}
 	</select>
 	
-	<insert id="insert" parameterType="apiDto">
+	<insert id="insert" parameterType="exhibitionDto">
 		INSERT INTO tb_api_date
 		(seq, title, startdate, enddate, place, realmname, thumbnail, gpsx, gpsy)
 		VALUES(

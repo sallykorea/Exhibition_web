@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.acorn.exhibition.home.dto.Com_LikeDto;
+import com.acorn.exhibition.home.dto.CommentLikeDto;
 import com.acorn.exhibition.home.dto.CommentDto;
 import com.acorn.exhibition.home.dto.FullCalendarDto;
 
@@ -103,7 +103,7 @@ public class CommentDaoImpl implements CommentDao{
 		}
 	}
 	@Override
-	public String getCommentLikeId(Com_LikeDto comlikeDto) {
+	public String getCommentLikeId(CommentLikeDto comlikeDto) {
 		String id=session.selectOne("comment.getid", comlikeDto);
 		return id;
 	}
