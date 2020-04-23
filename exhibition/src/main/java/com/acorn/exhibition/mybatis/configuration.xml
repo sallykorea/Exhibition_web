@@ -8,7 +8,7 @@
   	<typeAlias type="com.acorn.exhibition.users.dto.UsersDto" alias="usersDto"/>
   	<typeAlias type="com.acorn.exhibition.home.dto.FullCalendarDto" alias="fullCalendarDto"/>
   	<typeAlias type="com.acorn.exhibition.home.dto.CommentDto" alias="commentDto"/>
-  	<typeAlias type="com.acorn.exhibition.home.dto.ApiDto" alias="apiDto"/>
+  	<typeAlias type="com.acorn.exhibition.home.dto.ExhibitionDto" alias="exhibitionDto"/>
   	<typeAlias type="com.acorn.exhibition.com.dto.ComDto" alias="comDto"/>
   	<typeAlias type="com.acorn.exhibition.com.dto.ComCommentDto" alias="comCommentDto"/>
   </typeAliases>
