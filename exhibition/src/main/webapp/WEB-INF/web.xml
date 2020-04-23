@@ -61,5 +61,4 @@
 		<error-code>500</error-code>
 		<location>/error/500.do</location>
 	</error-page>
-
 </web-app>
