@@ -1,19 +1,19 @@
 package com.acorn.exhibition.home.dto;
 
-public class Com_LikeDto {
+public class CommentLikeDto {
 	private String id;
 	private int num;
 	private boolean isCommentLikeId;
 
-	public Com_LikeDto(){}
+	public CommentLikeDto(){}
 	
-	public Com_LikeDto(String id, int num) {
+	public CommentLikeDto(String id, int num) {
 		super();
 		this.id = id;
 		this.num = num;
 	}
 	
-	public Com_LikeDto(String id, int num, boolean isCommentLikeId) {
+	public CommentLikeDto(String id, int num, boolean isCommentLikeId) {
 		super();
 		this.id = id;
 		this.num = num;

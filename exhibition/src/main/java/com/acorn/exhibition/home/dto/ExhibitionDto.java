@@ -1,22 +1,7 @@
 package com.acorn.exhibition.home.dto;
 
-public class ApiDto {
+public class ExhibitionDto {
 	
-	//ApiDto
-	/*
-	private int seq;
-	private String title;
-	private String startdate;
-	private String enddate;
-	private String place;
-	private String realmname;
-	private String area;
-	private String thumbnail;
-	private String gpsx;
-	private String gpsy;
-	*/
-	
-	// ExhibitionDto
 	private int seq;
 	private String title;
 	private String startDate;
@@ -37,13 +22,16 @@ public class ApiDto {
 	private String placeUrl;
 	private String placeAddr;
 	private String placeSeq;
+	private int likeCount;
+	private boolean isExhibitionLikeId;
 
 	//디폴트 생성자
-	public ApiDto() {}
+	public ExhibitionDto() {}
 
-	public ApiDto(int seq, String title, String startDate, String endDate, String place, String realmName, String area,
-			String subTitle, String thumbNail, String price, String contents1, String contents2, String url,
-			String phone, String gpsX, String gpsY, String imgUrl, String placeUrl, String placeAddr, String placeSeq) {
+	public ExhibitionDto(int seq, String title, String startDate, String endDate, String place, String realmName,
+			String area, String subTitle, String thumbNail, String price, String contents1, String contents2,
+			String url, String phone, String gpsX, String gpsY, String imgUrl, String placeUrl, String placeAddr,
+			String placeSeq, int likeCount, boolean isExhibitionLikeId) {
 		super();
 		this.seq = seq;
 		this.title = title;
@@ -65,6 +53,8 @@ public class ApiDto {
 		this.placeUrl = placeUrl;
 		this.placeAddr = placeAddr;
 		this.placeSeq = placeSeq;
+		this.likeCount = likeCount;
+		this.isExhibitionLikeId = isExhibitionLikeId;
 	}
 
 	public int getSeq() {
@@ -226,5 +216,22 @@ public class ApiDto {
 	public void setPlaceSeq(String placeSeq) {
 		this.placeSeq = placeSeq;
 	}
-	
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public boolean getIsExhibitionLikeId() {
+		return isExhibitionLikeId;
+	}
+
+	public void setIsExhibitionLikeId(boolean isExhibitionLikeId) {
+		this.isExhibitionLikeId = isExhibitionLikeId;
+	}
+
+
 }
