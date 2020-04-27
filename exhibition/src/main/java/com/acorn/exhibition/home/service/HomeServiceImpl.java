@@ -236,7 +236,13 @@ public class HomeServiceImpl implements HomeService{
 		
 	}
 
-	//좋아요
+	/*
+	 * - 작성자 : 김현경
+	 * - 작성일 : 2020-04-25
+	 * - Method 설명 : 공연 상세 정보의 좋아요  기능
+	 */
+	static final int CLICKED=1;
+	
 	@Override
 	public Map<String, Object> updateLikeCount(HttpServletRequest request) {
 		
@@ -247,21 +253,21 @@ public class HomeServiceImpl implements HomeService{
 		dto.setSeq(seq);
 		dto.setId(id);
 		
-		//[{"isSuccess":boolean, "likecount":number}]
+		//{"isSuccess":boolean, "likecount":number}
 		Map<String, Object> map=new HashMap<String, Object>();
 
 		//exhibition_like 테이블에서 로그인된 id가 like를 클릭한적 있는지 찾아보기
 		int isClicked=dao.findLike(dto);
 		int likeCount=0;
 		
-		if(isClicked==1) { //클릭한적 있다면
+		if(isClicked==CLICKED) { //클릭한적 있다면
 			//exhibition_like 테이블에서 정보를 제거하고
-			boolean result1=dao.removeOnExhibitionLike(dto);
-			//exhibition_likecount 테이블에서 like 개수를 하나 빼준다.
-			boolean result2=dao.minusLikeCount(dto);
+			boolean isRemoved=dao.removeOnExhibitionLike(dto);
+			//tb_api_date 테이블에서 likeCount 개수를 하나 빼준다.
+			boolean minusLikeCount=dao.minusLikeCount(dto);
 			likeCount=dao.getData(seq).getLikeCount();
 
-			if(result1 && result2) {
+			if(isRemoved && minusLikeCount) {
 				map.put("isSuccess", true);
 				map.put("likecount", likeCount);
 				return map;
@@ -275,12 +281,12 @@ public class HomeServiceImpl implements HomeService{
 		}else { //클릭한적 없다면
 			
 			//exhibition_like 테이블에 id와 seq번호를 저장하고
-			boolean result1=dao.addOnExhibitionLike(dto);
-			//exhibition_likecount 테이블에서 like 개수를 하나 더해준다.
-			boolean result2=dao.addLikeCount(dto);
+			boolean isAdded=dao.addOnExhibitionLike(dto);
+			//tb_api_date 테이블에서 likeCount 개수를 하나 더해준다.
+			boolean addLikeCount=dao.addLikeCount(dto);
 			likeCount=dao.getData(seq).getLikeCount();
 			
-			if(result1 && result2) {
+			if(isAdded && addLikeCount) {
 				map.put("isSuccess", true);
 				map.put("likecount", likeCount);
 				return map;
@@ -289,7 +295,7 @@ public class HomeServiceImpl implements HomeService{
 				map.put("likecount", likeCount);
 				return map;
 			}
-		}//if end
+		}//if(isClicked==CLICKED) end
 		
 	}//updateLikeCount() end
 
